@@ -5,7 +5,7 @@ package com.adage.core {
 	 */
 	public class ADAGEDataObject 
 	{
-
+		public var access_token : String;
 	}
 
 }

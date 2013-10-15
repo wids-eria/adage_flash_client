@@ -82,14 +82,11 @@ import flash.net.*;
 		{
 			try
 			{
-				var headers : Array = [
-					new URLRequestHeader("Content-Type", "application/jsonrequest"),
-					new URLRequestHeader("Authentication", "Bearer " + token)
-				];
+				dataObject.access_token = token;
 				
 				var request : URLRequest = new URLRequest(url);
 				request.method = URLRequestMethod.POST;
-				request.requestHeaders = headers;
+				request.contentType = "application/jsonrequest";
 				request.data = JSON.stringify(dataObject);
 				
 				var loader : URLLoader = new URLLoader();
