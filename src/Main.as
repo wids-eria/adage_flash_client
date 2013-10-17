@@ -1,6 +1,7 @@
 package {
 	import com.adage.ADAGE;
-	import com.adage.data.ADAGEClickData;
+	import com.adage.data.ADAGEPlayerEvent;
+	import com.adage.data.ADAGEPositionalContext;
 	import flash.display.FrameLabel;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
@@ -23,7 +24,7 @@ package {
 			var adage : ADAGE = new ADAGE("Citizen Science", "1");
 			
 			adage.LoginPlayerWithCredentials("ztest", "zisnogood", null);
-			adage.AddData(new ADAGEClickData(50, 50));
+			adage.AddData(new ADAGEPlayerEvent(new ADAGEPositionalContext(1, 1, 1, 1, 1, 1)));
 			
 			if (stage)
 			{

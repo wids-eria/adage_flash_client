@@ -55,11 +55,6 @@ package com.adage {
 		{
 			if (this.online && pushData.length > 0)
 			{
-				for (var index : String in pushData)
-				{
-						pushData[index].session_token = this.auth_token;
-				}
-				
 				UploadDataObject(pushData, this.auth_token, null);
 				
 				pushData = new Array();
@@ -76,7 +71,6 @@ package com.adage {
 			dataObject.gameName = gameName;
 			dataObject.gameVersion = gameVersion;
 			dataObject.timestamp = curTime.toString();
-			dataObject.session_token = this.auth_token;
 			dataObject.key = classNames[1];
 			trace(dataObject.key);
 			
