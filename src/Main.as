@@ -1,6 +1,6 @@
 package {
 	import com.adage.ADAGE;
-	import com.adage.core.ADAGEGameInfo;
+	import com.adage.data.ADAGEClickData;
 	import flash.display.FrameLabel;
 	import flash.display.SimpleButton;
 	import flash.display.Sprite;
@@ -20,16 +20,10 @@ package {
 		
 		public function Main():void 
 		{
-			var adage : ADAGE = new ADAGE();
-			var game : ADAGEGameInfo = new ADAGEGameInfo();
-			game.name = "Citizen Science";
-			game.version = "1";
+			var adage : ADAGE = new ADAGE("Citizen Science", "1");
 			
-			adage.LoginPlayerWithCredentials("ztest", "zisnogood", function() : void {
-				adage.UploadDataObject(game, function() : void {
-					
-				});
-			});
+			adage.LoginPlayerWithCredentials("ztest", "zisnogood", null);
+			adage.AddData(new ADAGEClickData(50, 50));
 			
 			if (stage)
 			{

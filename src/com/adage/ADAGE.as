@@ -1,15 +1,18 @@
 package com.adage {
 	import com.adage.core.ADAGEDataObject;
-	import com.adage.core.ADAGEGameInfo;
-	import com.adage.core.ADAGEUser;
 	import com.adage.utilities.ADAGERequest;
 	import flash.display.Stage;
 	import flash.events.SecurityErrorEvent;
+	import flash.events.TimerEvent;
 	import flash.net.*;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	import flash.events.HTTPStatusEvent;
 	import flash.text.TextField;
+	import flash.utils.describeType;
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
+	import flash.utils.Timer;
 	
 	/**
 	 * ...
@@ -22,23 +25,64 @@ package com.adage {
 		public static var developmentURL : String = "http://ada.dev.eriainteractive.com/";
 		public static var stagingURL : String = "https://adage.gameslearningsociety.org/";
 		
+		public var gameName : String;
+		public var gameVersion : String;
+		
 		public var staging : Boolean = false;
 		public var production : Boolean = false;
-		public var gameInfo : ADAGEGameInfo;
 		public var pushRate : int = 5;
 		public var online : Boolean = false;
 		
 		private var currentSession : String;
-		private var user : ADAGEUser;
 		private var lastPush : int = 0;
 		private var clientID : String = "foo";
 		private var clientSecret : String = "bar";
-		public var auth_token : String;
+		private var auth_token : String;
 		
-		/**
-		 * Returns the url of which to push data to. 
-		 * Automatically assigns the staging, development, or production state.
-		 */
+		private var pushData : Array = new Array();
+		private var pushTimer : Timer = null;
+		
+		public function ADAGE(gameName : String, gameVersion : String, timerInMilliseconds : Number = 5000) : void
+		{
+			this.gameName = gameName;
+			this.gameVersion = gameVersion;
+			this.pushTimer = new Timer(timerInMilliseconds);
+			this.pushTimer.addEventListener(TimerEvent.TIMER, this.PushData);
+			this.pushTimer.start();
+		}
+		
+		private function PushData(e : TimerEvent) : void
+		{
+			if (this.online && pushData.length > 0)
+			{
+				for (var index : String in pushData)
+				{
+						pushData[index].session_token = this.auth_token;
+				}
+				
+				UploadDataObject(pushData, this.auth_token, null);
+				
+				pushData = new Array();
+			}
+		}
+		
+		public function AddData(dataObject:ADAGEDataObject) : void
+		{
+			var time : Date = new Date();
+			var curTime : Number = time.time;
+			var className : String = getQualifiedClassName(dataObject);
+			var classNames : Array = className.split("::");
+			
+			dataObject.gameName = gameName;
+			dataObject.gameVersion = gameVersion;
+			dataObject.timestamp = curTime.toString();
+			dataObject.session_token = this.auth_token;
+			dataObject.key = classNames[1];
+			trace(dataObject.key);
+			
+			pushData.push(dataObject);
+		}
+		
 		public function get pushURL() : String 
 		{
 			var url : String = ADAGE.developmentURL;
@@ -64,15 +108,19 @@ package com.adage {
 		}
 		
 		/**
-		 * Authorizes a USER with ADAGE and should (I think) return a token.
+		 * Authorizes a USER with ADAGE
 		 * @param	email
 		 * @param	password
 		 */
 		public function LoginPlayerWithCredentials(email:String, password:String, onSuccess : Function) : void 
 		{
+			var adage : ADAGE = this;
+			
 			ADAGERequest.LoginPlayerWithCredentials(this.pushURL + "auth/authorize_unity", this.clientID, this.clientSecret, email, password, function(token : String) : void {
-				this.online = true;
-				this.auth_token = token;
+				trace("Successfully authenticated with the server: " + token);
+				
+				adage.online = true;
+				adage.auth_token = token;
 				
 				if(onSuccess != null) {
 					onSuccess(token);
@@ -86,10 +134,10 @@ package com.adage {
 		 * @param	dataObject
 		 * @param	onSuccess
 		 */
-		public function UploadDataObject(dataObject : ADAGEDataObject, onSuccess : Function) : void
+		public function UploadDataObject(data : Array, auth_token : String, onSuccess : Function) : void
 		{
-			ADAGERequest.UploadDataObject(this.pushURL + "data_collector.json", dataObject, this.auth_token, function(e : Event) : void {
-				trace(e.target.data);
+			ADAGERequest.UploadDataObject(this.pushURL + "data_collector.json", data, auth_token, function(e : Event) : void {
+				trace("Push Complete: " + e.target.data);
 				
 				if (onSuccess != null) {
 					onSuccess();

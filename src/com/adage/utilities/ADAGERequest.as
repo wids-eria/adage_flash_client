@@ -3,6 +3,7 @@ package com.adage.utilities {
 	
 import adobe.utils.CustomActions;
 import com.adage.core.ADAGEDataObject;
+import com.adage.core.ADAGEUploadWrapper;
 import flash.errors.IOError;
 import flash.events.Event;
 import flash.events.HTTPStatusEvent;
@@ -78,16 +79,17 @@ import flash.net.*;
 
 		}
 		
-		public static function UploadDataObject(url : String, dataObject : ADAGEDataObject, token : String, onComplete : Function) : void
+		public static function UploadDataObject(url : String, data : Array, token : String, onComplete : Function) : void
 		{
 			try
 			{
-				dataObject.access_token = token;
-				
+				var wrapper : ADAGEUploadWrapper = new ADAGEUploadWrapper(token, data);
 				var request : URLRequest = new URLRequest(url);
 				request.method = URLRequestMethod.POST;
 				request.contentType = "application/jsonrequest";
-				request.data = JSON.stringify(dataObject);
+				request.data = JSON.stringify(wrapper);
+				
+				trace(request.data);
 				
 				var loader : URLLoader = new URLLoader();
 				loader.dataFormat = URLLoaderDataFormat.TEXT;
