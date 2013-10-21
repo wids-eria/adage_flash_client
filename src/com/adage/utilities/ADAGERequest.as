@@ -24,11 +24,9 @@ import flash.net.*;
 			var loader : URLLoader = new URLLoader();
 			loader.addEventListener(Event.COMPLETE, onComplete);
 			loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, function (e:HTTPStatusEvent) : void {
-				Main.textField.text = e.toString();
 				trace(e);
 			});
 			loader.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent) : void {
-				Main.textField.text = e.toString();
 				trace(e);
 			});
 			loader.load(request);
@@ -61,12 +59,10 @@ import flash.net.*;
 				});
 				
 				loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, function (e:HTTPStatusEvent) : void {
-					Main.textField.text = e.toString();
 					trace(e);
 				});
 				
 				loader.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent) : void {
-					Main.textField.text = e.toString();
 					trace(e);
 				});
 				
@@ -97,12 +93,10 @@ import flash.net.*;
 				loader.addEventListener(Event.COMPLETE, onComplete);
 				
 				loader.addEventListener(HTTPStatusEvent.HTTP_STATUS, function (e:HTTPStatusEvent) : void {
-					Main.textField.text = e.toString();
 					trace(e);
 				});
 				
 				loader.addEventListener(IOErrorEvent.IO_ERROR, function(e:IOErrorEvent) : void {
-					Main.textField.text = e.toString();
 					trace(e);
 				});
 				

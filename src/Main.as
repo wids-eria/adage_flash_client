@@ -17,8 +17,6 @@ package {
 	 */
 	public class Main extends Sprite {
 		
-		public static var textField : TextField = new TextField();
-		
 		public function Main():void 
 		{
 			var adage : ADAGE = new ADAGE("Citizen Science", "1");

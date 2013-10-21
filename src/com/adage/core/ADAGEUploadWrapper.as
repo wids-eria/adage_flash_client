@@ -1,7 +1,7 @@
 package com.adage.core {
 	/**
 	 * ...
-	 * @author 
+	 * @author Devon Klompmaker
 	 */
 	public class ADAGEUploadWrapper 
 	{
