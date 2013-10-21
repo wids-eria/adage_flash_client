@@ -72,6 +72,7 @@ package com.adage {
 			dataObject.gameVersion = gameVersion;
 			dataObject.timestamp = curTime.toString();
 			dataObject.key = classNames[1];
+			dataObject.flashKey = className;
 			trace(dataObject.key);
 			
 			pushData.push(dataObject);
@@ -120,6 +121,21 @@ package com.adage {
 					onSuccess(token);
 				}
 			});
+		}
+		
+		/**
+		 * Takes an authorization token and immediately fires the onSuccess function.
+		 * @param	token
+		 * @param	onSuccess
+		 */
+		public function LoginPlayerWithAuthorizationToken(token:String, onSuccess : Function) : void 
+		{
+			this.online = true;
+			this.auth_token = token;
+			
+			if(onSuccess != null) {
+				onSuccess(token);
+			}
 		}
 		
 		/**

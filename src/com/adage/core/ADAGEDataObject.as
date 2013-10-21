@@ -12,6 +12,7 @@ package com.adage.core {
 		public var session_token : String;
 		public var timestamp : String;
 		public var key : String;
+		public var flashKey : String;
 	}
 
 }

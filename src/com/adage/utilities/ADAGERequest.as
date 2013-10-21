@@ -4,6 +4,7 @@ package com.adage.utilities {
 import adobe.utils.CustomActions;
 import com.adage.core.ADAGEDataObject;
 import com.adage.core.ADAGEUploadWrapper;
+import com.adobe.serialization.json.JSON;
 import flash.errors.IOError;
 import flash.events.Event;
 import flash.events.HTTPStatusEvent;
@@ -51,7 +52,7 @@ import flash.net.*;
 				loader.dataFormat = URLLoaderDataFormat.TEXT;
 				
 				loader.addEventListener(Event.COMPLETE, function(e : Event) :void {
-					var data : Object = JSON.parse(e.target.data);
+					var data : Object = JSON.decode(e.target.data);
 					if (data != null) {
 						var token : String = data["access_token"];
 						onComplete(token);
@@ -83,7 +84,7 @@ import flash.net.*;
 				var request : URLRequest = new URLRequest(url);
 				request.method = URLRequestMethod.POST;
 				request.contentType = "application/jsonrequest";
-				request.data = JSON.stringify(wrapper);
+				request.data = JSON.encode(wrapper);
 				
 				trace(request.data);
 				

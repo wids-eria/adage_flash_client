@@ -1,5 +1,4 @@
 package com.adage.data {
-	import flash.globalization.StringTools;
 	/**
 	 * ...
 	 * @author Devon Klompmaker
