@@ -23,14 +23,6 @@ package {
 			
 			adage.LoginPlayerWithCredentials("ztest", "zisnogood", null);
 			adage.AddData(new ADAGEPlayerEvent(new ADAGEPositionalContext(1, 1, 1, 1, 1, 1)));
-			
-			if (stage)
-			{
-				textField.text = "Hello World!";
-				textField.width = 800;
-				textField.height = 600;
-				addChild(textField);
-			}
 		}
 		
 	}
